@@ -1,0 +1,11 @@
+1. Create a blank project
+2. Add Dummy Data project
+	- Net Core console app.  Could easily be framework
+	- Class to hold sample data
+	- Generate sample data file
+	- 500K records ~ 60 MB file
+3. Add Database Project
+	- Data Tools needs to be installed
+	- Search google for SSDT, or https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt
+	- Follow installation instructions
+
