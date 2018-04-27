@@ -29,6 +29,40 @@ namespace FileAndLoad
 
         public void LoadByType(string FileName)
         {
+            DataTable dt = LoadDataTable(FileName);
+
+            //Load database
+            using (SqlConnection conn = new SqlConnection(ConnString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "InsertType";
+                SqlParameter p = new SqlParameter();
+                p.ParameterName = "@type";
+                p.SqlDbType = SqlDbType.Structured;
+                p.Value = dt;
+                cmd.Parameters.Add(p);
+
+                cmd.ExecuteScalar();
+            }
+        }
+
+        public void LoadByBulkCopy(string FileName)
+        {
+            DataTable dt = LoadDataTable(FileName);
+
+            using (SqlBulkCopy sbc = new SqlBulkCopy(ConnString))
+            {
+                sbc.DestinationTableName = "DataTable";
+                sbc.WriteToServer(dt);
+            }
+        }
+
+
+        private static DataTable LoadDataTable(string FileName)
+        {
             DataTable dt = new DataTable("records");
             dt.Columns.Add("s1");
             dt.Columns.Add("s2");
@@ -53,22 +87,7 @@ namespace FileAndLoad
                 }
             }
 
-            //Load database
-            using (SqlConnection conn = new SqlConnection(ConnString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = conn;
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.CommandText = "InsertType";
-                SqlParameter p = new SqlParameter();
-                p.ParameterName = "@type";
-                p.SqlDbType = SqlDbType.Structured;
-                p.Value = dt;
-                cmd.Parameters.Add(p);
-
-                cmd.ExecuteScalar();
-            }
+            return dt;
         }
     }
 }
