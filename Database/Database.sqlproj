@@ -68,9 +68,11 @@
   <ItemGroup>
     <Build Include="dbo\Tables\DataTable.sql" />
     <Build Include="dbo\Types\CustomType.sql" />
-    <Build Include="dbo\Functions\LoadTable.sql" />
+    <Build Include="dbo\Tables\Table.sql" />
+    <Build Include="dbo\Stored Procedures\LoadTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
+    <None Include="test.txt" />
   </ItemGroup>
 </Project>

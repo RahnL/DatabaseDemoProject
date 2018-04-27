@@ -19,6 +19,7 @@ namespace FileAndLoad
             GenerateTestFile();
 
             LoadNaiveTest();
+            LoadTypeTest();
         }
 
         private static void LoadConfiguration()
@@ -44,6 +45,18 @@ namespace FileAndLoad
             Console.WriteLine("Naive Load took {0} milliseconds.", stopwatchNaive.ElapsedMilliseconds);
         }
 
+        private static void LoadTypeTest()
+        {
+            Console.WriteLine("Starting Type Load Test");
+
+            Stopwatch stopwatchType= new Stopwatch();
+            stopwatchType.Start();
+            TypeLoad nl = new TypeLoad(connString);
+            nl.LoadByType(SampleFile);
+            stopwatchType.Stop();
+
+            Console.WriteLine("Type Load took {0} milliseconds.", stopwatchType.ElapsedMilliseconds);
+        }
         static void GenerateTestFile()
         {
             if (File.Exists(SampleFile))

@@ -34,6 +34,7 @@ namespace FileAndLoad
 
             using (SqlConnection conn = new SqlConnection(ConnString))
             {
+                conn.Open();
                 using (StreamReader r = new StreamReader(FileName))
                 {
                     while (r.Peek() != -1)
@@ -42,11 +43,11 @@ namespace FileAndLoad
 
                         SqlCommand cmd = new SqlCommand(sql, conn);
                         cmd.Parameters.AddWithValue("@s1", line[0]);
-                        cmd.Parameters.AddWithValue("@s2", line[0]);
-                        cmd.Parameters.AddWithValue("@d1", line[0]);
-                        cmd.Parameters.AddWithValue("@d2", line[0]);
-                        cmd.Parameters.AddWithValue("@n1", line[0]);
-                        cmd.Parameters.AddWithValue("@n2", line[0]);
+                        cmd.Parameters.AddWithValue("@s2", line[1]);
+                        cmd.Parameters.AddWithValue("@d1", line[2]);
+                        cmd.Parameters.AddWithValue("@d2", line[3]);
+                        cmd.Parameters.AddWithValue("@n1", line[4]);
+                        cmd.Parameters.AddWithValue("@n2", line[5]);
                         cmd.CommandType = System.Data.CommandType.Text;
 
                         cmd.ExecuteNonQuery();

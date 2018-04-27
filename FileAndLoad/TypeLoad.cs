@@ -45,11 +45,13 @@ namespace FileAndLoad
                     string[] line = r.ReadLine().Split(',');
                     DataRow row = dt.NewRow();
                     row["s1"] = line[0];
-                    row["s2"] = line[0];
-                    row["d1"] = line[0];
-                    row["d2"] = line[0];
-                    row["n1"] = line[0];
-                    row["n2"] = line[0];
+                    row["s2"] = line[1];
+                    row["d1"] = line[2];
+                    row["d2"] = line[3];
+                    row["n1"] = line[4];
+                    row["n2"] = line[5];
+
+                    dt.Rows.Add(row);
                 }
             }
 
@@ -60,9 +62,9 @@ namespace FileAndLoad
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = conn;
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.CommandText = "InsertType";
+                cmd.CommandText = "LoadTable";
                 SqlParameter p = new SqlParameter();
-                p.ParameterName = "@type";
+                p.ParameterName = "@data";
                 p.SqlDbType = SqlDbType.Structured;
                 p.Value = dt;
                 cmd.Parameters.Add(p);

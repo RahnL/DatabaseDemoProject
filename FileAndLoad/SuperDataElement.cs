@@ -30,7 +30,7 @@ namespace FileAndLoad
 
         public override string ToString()
         {
-            return string.Format("{0},{1},{2},{3},{4},{5}", this.S1, this.S2, this.N1, this.N2, this.Dt1, this.Dt2);
+            return string.Format("{0},{1},{2},{3},{4},{5}", this.S1, this.S2, this.Dt1, this.Dt2, this.N1, this.N2);
         }
         // from https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings-in-c
         private string GetRandomString(int length)
