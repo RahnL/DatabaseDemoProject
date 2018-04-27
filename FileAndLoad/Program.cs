@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.Exten­sions.Configuration;
+using System.Data.SqlClient;
 
 namespace FileAndLoad
 {
@@ -46,6 +47,7 @@ namespace FileAndLoad
             stopwatchNaive.Stop();
 
             Console.WriteLine("Naive Load took {0} milliseconds.", stopwatchNaive.ElapsedMilliseconds);
+            GetAndClearTableInfo();
         }
 
         private static void LoadNonNaiveTest()
@@ -59,6 +61,7 @@ namespace FileAndLoad
             stopwatchType.Stop();
 
             Console.WriteLine("Type Load took {0} milliseconds.", stopwatchType.ElapsedMilliseconds);
+            GetAndClearTableInfo();
 
             Console.WriteLine("Starting BulkCopy Load Test");
 
@@ -68,21 +71,9 @@ namespace FileAndLoad
             stopwatchType.Stop();
 
             Console.WriteLine("Type BulkCopy took {0} milliseconds.", stopwatchType.ElapsedMilliseconds);
+            GetAndClearTableInfo();
         }
-
-        private static void LoadBulkTest()
-        {
-            Console.WriteLine("Starting BulkCopy Load Test");
-
-            Stopwatch stopwatchType = new Stopwatch();
-            stopwatchType.Start();
-            TypeLoad nl = new TypeLoad(connString);
-            nl.LoadBulkCopy(SampleFile);
-            stopwatchType.Stop();
-
-            Console.WriteLine("Type BulkCopy took {0} milliseconds.", stopwatchType.ElapsedMilliseconds);
-        }
-
+        
         static void GenerateTestFile()
         {
             if (File.Exists(SampleFile))
@@ -99,6 +90,21 @@ namespace FileAndLoad
             }
         }
 
+        private static void GetAndClearTableInfo()
+        {
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                cmd.CommandText = "Select count(*) from DataTable";
+                var n =cmd.ExecuteScalar().ToString();
 
+                Console.WriteLine("Datatable contains {0} records. Clearing for next test.", n);
+
+                cmd.CommandText = "truncate table DataTable";
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
