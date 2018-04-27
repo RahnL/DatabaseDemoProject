@@ -19,7 +19,10 @@ namespace FileAndLoad
             GenerateTestFile();
 
             LoadNaiveTest();
-            LoadTypeTest();
+            LoadNonNaiveTest();
+
+            Console.WriteLine("Press a key to end");
+            Console.ReadKey();
         }
 
         private static void LoadConfiguration()
@@ -45,25 +48,48 @@ namespace FileAndLoad
             Console.WriteLine("Naive Load took {0} milliseconds.", stopwatchNaive.ElapsedMilliseconds);
         }
 
-        private static void LoadTypeTest()
+        private static void LoadNonNaiveTest()
         {
             Console.WriteLine("Starting Type Load Test");
 
-            Stopwatch stopwatchType= new Stopwatch();
+            Stopwatch stopwatchType = new Stopwatch();
             stopwatchType.Start();
             TypeLoad nl = new TypeLoad(connString);
             nl.LoadByType(SampleFile);
             stopwatchType.Stop();
 
             Console.WriteLine("Type Load took {0} milliseconds.", stopwatchType.ElapsedMilliseconds);
+
+            Console.WriteLine("Starting BulkCopy Load Test");
+
+            stopwatchType.Reset();
+            stopwatchType.Start();
+            nl.LoadBulkCopy(SampleFile);
+            stopwatchType.Stop();
+
+            Console.WriteLine("Type BulkCopy took {0} milliseconds.", stopwatchType.ElapsedMilliseconds);
         }
+
+        private static void LoadBulkTest()
+        {
+            Console.WriteLine("Starting BulkCopy Load Test");
+
+            Stopwatch stopwatchType = new Stopwatch();
+            stopwatchType.Start();
+            TypeLoad nl = new TypeLoad(connString);
+            nl.LoadBulkCopy(SampleFile);
+            stopwatchType.Stop();
+
+            Console.WriteLine("Type BulkCopy took {0} milliseconds.", stopwatchType.ElapsedMilliseconds);
+        }
+
         static void GenerateTestFile()
         {
             if (File.Exists(SampleFile))
                 return;
 
             int numRecords = 500000;    //Over 50MB file. Play with it to make bigger/smaller.
-            
+
             using (StreamWriter w = new StreamWriter(SampleFile))
             {
                 for (int i = 0; i < numRecords; i++)
@@ -73,6 +99,6 @@ namespace FileAndLoad
             }
         }
 
-        
+
     }
 }
